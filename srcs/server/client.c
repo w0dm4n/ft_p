@@ -12,14 +12,14 @@
 
 #include "all.h"
 
-char				*get_client_addr(struct sockaddr_in client)
+void				send_data(t_client *client, char *msg)
 {
-	return (inet_ntoa(client.sin_addr));
-}
-
-int					get_client_port(struct sockaddr_in client)
-{
-	return (ntohs(client.sin_port));
+	msg = encrypt_message(msg);
+	if (client->fd)
+	{
+		write(client->fd, msg, ft_strlen(msg));
+		ft_bzero(msg, ft_strlen(msg));
+	}
 }
 
 t_client			*alloc_new_client(SOCKET sock, struct sockaddr_in in)
@@ -30,6 +30,7 @@ t_client			*alloc_new_client(SOCKET sock, struct sockaddr_in in)
 		return (NULL);
 	client->fd = sock;
 	client->in = in;
+	client->connected = TRUE;
 	return (client);
 }
 

@@ -12,7 +12,14 @@
 
 #include "all.h"
 
-static void	close_child(t_client *client)
+static void		print_received(t_client *client, char *buffer)
+{
+	printf("%sReceived message from client (%s:%d): %s%s\n", KMAG, \
+	get_client_addr(client->in), get_client_port(client->in), \
+		buffer, KNRM);
+}
+
+static void		close_child(t_client *client)
 {
 	close(client->fd);
 	printf("%sOne client disconnected (%s:%d)%s\n", KRED, \
@@ -20,7 +27,7 @@ static void	close_child(t_client *client)
 	exit(0);
 }
 
-void		child(t_client *client)
+void			child(t_client *client)
 {
 	char		buffer[CLIENT_BUFFER];
 	int			res;
@@ -34,7 +41,8 @@ void		child(t_client *client)
 		res = recv(client->fd, buffer, CLIENT_READ, 0);
 		if (res > 0)
 		{
-			printf("RECEIVED A MSG FROM A FORK ! HELLO FORK WHY DID U SEND ME A MESSAGE FORK OMG TELL ME WTF WOW\n");
+			print_received(client, buffer);
+			handle(decrypt_message(buffer), client);
 			ft_bzero(buffer, CLIENT_READ);
 		}
 		else
