@@ -22,7 +22,7 @@ int					get_client_port(struct sockaddr_in client)
 	return (ntohs(client.sin_port));
 }
 
-char			*int_to_hexastring(char c)
+char				*int_to_hexastring(char c)
 {
 	char		*res;
 
@@ -32,7 +32,7 @@ char			*int_to_hexastring(char c)
 	return (res);
 }
 
-char			hexastring_to_int(char *s)
+char				hexastring_to_int(char *s)
 {
 	char xor;
 

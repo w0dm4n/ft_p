@@ -14,6 +14,7 @@
 
 static void		print_received(t_client *client, char *buffer)
 {
+	buffer = encrypt_message(buffer);
 	printf("%sReceived message from client (%s:%d): %s%s\n", KMAG, \
 	get_client_addr(client->in), get_client_port(client->in), \
 		buffer, KNRM);
@@ -42,7 +43,7 @@ void			child(t_client *client)
 		if (res > 0)
 		{
 			print_received(client, buffer);
-			handle(decrypt_message(buffer), client);
+			handle(buffer, client);
 			ft_bzero(buffer, CLIENT_READ);
 		}
 		else

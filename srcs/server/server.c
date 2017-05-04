@@ -37,7 +37,7 @@ t_server		*get_socket(int port)
 	return (server);
 }
 
-void		init_server(int port)
+void			init_server(int port)
 {
 	t_server	*server;
 

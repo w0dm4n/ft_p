@@ -12,7 +12,8 @@
 
 #include "all.h"
 
-void	chdir_command_ext(char *args, char *path, int args_nbr)
+void	chdir_command_ext(char *args, char *path, int args_nbr, \
+t_client *client)
 {
 	char current_path[CLIENT_READ];
 
@@ -20,13 +21,13 @@ void	chdir_command_ext(char *args, char *path, int args_nbr)
 	getcwd(current_path, CLIENT_READ);
 	args_nbr = get_args_nbr(args);
 	args = ft_strtrim(args);
-	if (args_nbr == 1)
+	if (args_nbr == 0)
 	{
 		if (!ft_strcmp(args, "/"))
 			change_folder("/", 1);
 		if (!ft_strcmp(args, ".") || !ft_strcmp(args, "./"))
 			return ;
-		if (get_path(current_path, args))
+		if (get_path(current_path, args, client))
 		{
 			chdir(args);
 			getcwd(path, CLIENT_READ);
@@ -34,5 +35,5 @@ void	chdir_command_ext(char *args, char *path, int args_nbr)
 		}
 	}
 	else
-		ft_putstr("cd: too many arguments");
+		send_info(client, "cd: bad arguments !");
 }

@@ -14,7 +14,6 @@
 
 void				send_data(t_client *client, char *msg)
 {
-	msg = encrypt_message(msg);
 	if (client->fd)
 	{
 		write(client->fd, msg, ft_strlen(msg));

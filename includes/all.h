@@ -18,6 +18,9 @@
 # include <sys/socket.h>
 # include <arpa/inet.h>
 # include <unistd.h>
+# include <sys/stat.h>
+# include <dirent.h>
+
 /*
 ** COLORS
 */
@@ -33,11 +36,10 @@
 # define FALSE	0
 # define MAX_PORT 65535
 # define SOCKET int
-# define CLIENT_BUFFER 8193
-# define CLIENT_READ 8192
 # define bool int
 
 # define ESCAPE_CHAR	"|"
+# define ESCAPE_DATA	","
 # define ENCRYPTION_KEY "@#$KGERNGJR$#^#$#@(CG@$)+="
 # define CLEAR_SCREEN 	"\033[2J"
 # define PATH_MAX_SIZE	16192
@@ -68,14 +70,17 @@ void					accept_client(t_server *server);
 void    				child(t_client *client);
 int						get_client_port(struct sockaddr_in client);
 char					*get_client_addr(struct sockaddr_in client);
-int						get_path(char *path, char *args);
-void					chdir_command(char *args);
-void					chdir_command_ext(char *args, char *path, int args_nbr);
+int						get_path(char *path, char *args, t_client *client);
+void					chdir_command(char **args, t_client *client);
+void					chdir_command_ext(char *args, char *path, int args_nbr, t_client *client);
 char					*get_subdir(char *path);
 int						get_args_nbr(char *args);
 void					change_folder(char *path, int change_path);
 int						handle(char *buffer, t_client *client);
 bool					send_current_pwd(t_client *client);
+void					send_info(t_client *client, char *msg);
+int						check_access_folder(char *real_path, char *args, t_client *client);
+void					send_current_directory_files(t_client *client);
 
 /*
 ** CLIENT
@@ -92,6 +97,11 @@ int						handle(char *entry, t_client *client);
 bool					help(void);
 bool					handle_chdir(t_client *client, char *path);
 bool					pwd(t_client *client);
+void					print_pwd(char **split, t_client *client);
+void					print_info(char **split, t_client *client);
+bool     				send_ls_client(t_client *client);
+void					print_ls(char **split);
+
 /*
 ** BOTH SIDES
 */
@@ -113,6 +123,7 @@ char					*decrypt_message(char *crypted);
 # define CLEAR_COMMAND "clear"
 # define CHDIR_COMMAND "cd"
 # define PWD_COMMAND "pwd"
+# define LS_COMMAND "ls"
 
 /*
 ** SOCKET SIZE DEFINE
@@ -127,5 +138,7 @@ char					*decrypt_message(char *crypted);
 
 # define CHDIR_MESSAGE "CHDIR_MESSAGE"
 # define PWD_MESSAGE "PWD_MESSAGE"
+# define INFO_MESSAGE "INFO_MESSAGE"
+# define LS_MESSAGE   "LS_MESSAGE"
 
 #endif

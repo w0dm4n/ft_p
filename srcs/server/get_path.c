@@ -49,7 +49,6 @@ char	*go_above(char *args, char *path, int i, int i_2)
 			ft_bzero(folder, 1024);
 		}
 	}
-	free(folder);
 	return (path);
 }
 
@@ -77,11 +76,10 @@ char	*go_inside(char *args, char *path, int i, int i_2)
 		}
 		i++;
 	}
-	free(folder);
 	return (path);
 }
 
-int		get_path(char *path, char *args)
+int		get_path(char *path, char *args, t_client *client)
 {
 	int		subdir;
 
@@ -95,6 +93,5 @@ int		get_path(char *path, char *args)
 		path = args;
 	else
 		path = go_inside(args, path, 0, 0);
-	return (1);
-	//return ((check_access_folder(path, args) ? 1 : 0));
+	return ((check_access_folder(path, args, client) ? 1 : 0));
 }

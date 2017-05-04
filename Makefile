@@ -33,19 +33,22 @@ LIBFT_DIR			=	libft/
 LIBFT_LIB			=	$(LIBFT_DIR)libft.a
 
 SRCBASE_SERVEUR	=	\
-					main.c              \
-					ascii_art.c         \
-					server.c            \
-					error.c             \
-					client.c            \
-					fork.c              \
-					encryption.c        \
-					utils.c             \
-					chdir_command.c     \
-					chdir_command_ext.c \
-					get_path.c          \
-					handler.c           \
-					pwd.c
+					main.c                \
+					ascii_art.c           \
+					server.c              \
+					error.c               \
+					client.c              \
+					fork.c                \
+					encryption.c          \
+					utils.c               \
+					chdir_command.c       \
+					chdir_command_ext.c   \
+					get_path.c            \
+					handler.c             \
+					pwd.c                 \
+					info.c                \
+					check_access_folder.c \
+					ls.c
 
 SRCBASE_CLIENT	=	\
 					main.c         \
@@ -59,7 +62,9 @@ SRCBASE_CLIENT	=	\
 					handler.c      \
 					help.c         \
 					chdir.c        \
-					pwd.c
+					pwd.c          \
+					info.c         \
+					ls.c
 
 INCS		=	$(addprefix $(INCDIR), $(INCBASE))
 

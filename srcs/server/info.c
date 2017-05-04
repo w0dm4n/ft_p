@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   info.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frmarinh <frmarinh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/03 06:15:30 by frmarinh          #+#    #+#             */
-/*   Updated: 2017/05/03 06:15:37 by frmarinh         ###   ########.fr       */
+/*   Created: 2017/05/04 16:18:50 by frmarinh          #+#    #+#             */
+/*   Updated: 2017/05/04 16:18:56 by frmarinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "all.h"
 
-static char				*serialize_pwd(char *data)
+static char		*serialize_info(char *data)
 {
 	char	*to_send;
 
 	if (!(to_send = ft_strnew(CLIENT_READ)))
 		return (NULL);
-	ft_strcat(to_send, PWD_MESSAGE);
+	ft_strcat(to_send, INFO_MESSAGE);
 	ft_strcat(to_send, ESCAPE_CHAR);
 	ft_strcat(to_send, data);
 	return (to_send);
 }
 
-bool					send_current_pwd(t_client *client)
+void			send_info(t_client *client, char *msg)
 {
-	char	*current_path;
-
-	if (!(current_path = (char*)malloc(sizeof(PATH_MAX_SIZE))))
-		return (FALSE);
-	getcwd(current_path, PATH_MAX_SIZE);
-	send_data(client, serialize_pwd(current_path));
-	return (TRUE);
+	if (client != NULL)
+		send_data(client, serialize_info(msg));
 }

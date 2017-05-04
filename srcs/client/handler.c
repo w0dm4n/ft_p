@@ -22,7 +22,10 @@ static int		handle_suite(char **split, t_client *client)
 {
 	if (!ft_strncmp(split[0], PWD_COMMAND, \
 		ft_strlen(PWD_COMMAND)))
-			return (pwd(client));
+		return (pwd(client));
+	else if (!ft_strncmp(split[0], LS_COMMAND, \
+		ft_strlen(LS_COMMAND)))
+		return (send_ls_client(client));
 	else
 		not_found();
 	return (TRUE);
