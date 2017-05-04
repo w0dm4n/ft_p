@@ -67,5 +67,4 @@ void		chdir_command(char **datas, t_client *client)
 	if (!(path = (char*)malloc(sizeof(char) * CLIENT_READ)))
 		return ;
 	chdir_command_ext(datas[1], path, 0, client);
-	free(path);
 }
