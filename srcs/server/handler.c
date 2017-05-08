@@ -20,6 +20,10 @@ static int		handle_esc(char **split, t_client *client, char *data)
 		chdir_command(split, client);
 	else if (!ft_strcmp(split[0], LS_MESSAGE))
 		send_current_directory_files(client);
+	else if (!ft_strcmp(split[0], GET_MESSAGE))
+		get_file(split, client);
+	else if (!ft_strcmp(split[0], GET_DATA_MESSAGE))
+		send_file_data(client, client->current_file);
 	return (TRUE);
 }
 

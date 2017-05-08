@@ -12,7 +12,19 @@
 
 #include "all.h"
 
-void	chdir_command_ext(char *args, char *path, int args_nbr, \
+void			send_new_path(t_client *client, char *path)
+{
+	char	*message;
+
+	if(!(message = ft_strnew(CLIENT_READ)))
+		return ;
+	ft_strcat(message, "SUCCESS: You are now in the directory ");
+	ft_strcat(message, path);
+	send_info(client, message);
+	free(message);
+}
+
+void			chdir_command_ext(char *args, char *path, int args_nbr, \
 t_client *client)
 {
 	char current_path[CLIENT_READ];
@@ -29,11 +41,12 @@ t_client *client)
 			return ;
 		if (get_path(current_path, args, client))
 		{
+			send_new_path(client, args);
 			chdir(args);
 			getcwd(path, CLIENT_READ);
 			change_folder(path, 0);
 		}
 	}
 	else
-		send_info(client, "cd: bad arguments !");
+		send_info(client, "ERROR: bad arguments !");
 }

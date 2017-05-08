@@ -6,7 +6,7 @@
 #    By: frmarinh <frmarinh@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 17:57:50 by frmarinh          #+#    #+#              #
-#    Updated: 2017/03/30 16:01:42 by frmarinh         ###   ########.fr        #
+#    Updated: 2017/05/08 16:26:41 by frmarinh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ NAMEBASE    =   $(shell basename $(NAME))
 LENGTHNAME	=	`printf "%s" $(NAMEBASE) | wc -c`
 MAX_COLS	=	$$(echo "$$(tput cols)-24-$(LENGTHNAME)"|bc)
 
-CC			=	gcc 
+CC			=	gcc
 FLAGS       =
 #FLAGS		=	-Wall -Wextra -Werror -O3
 FLAGS_O		=	
@@ -48,7 +48,10 @@ SRCBASE_SERVEUR	=	\
 					pwd.c                 \
 					info.c                \
 					check_access_folder.c \
-					ls.c
+					check_access_file.c   \
+					ls.c                  \
+					get.c                 \
+					file.c
 
 SRCBASE_CLIENT	=	\
 					main.c         \
@@ -64,7 +67,9 @@ SRCBASE_CLIENT	=	\
 					chdir.c        \
 					pwd.c          \
 					info.c         \
-					ls.c
+					ls.c           \
+					get.c          \
+					file.c
 
 INCS		=	$(addprefix $(INCDIR), $(INCBASE))
 

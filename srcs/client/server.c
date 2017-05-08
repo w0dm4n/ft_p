@@ -25,7 +25,19 @@ void		from_server(char *msg, t_client *client)
 			print_info(split, client);
 		else if (!ft_strcmp(split[0], LS_MESSAGE))
 			print_ls(split);
+		else if (!ft_strcmp(split[0], GET_MESSAGE))
+			set_get_file(split, client);
+		else if (!ft_strcmp(split[0], EOF_MESSAGE))
+			end_file(client);
 	}
+}
+
+int			get_real_len(t_file *file)
+{
+	int part_len = get_len_client(file->size);
+	if ((file->offset + part_len) > file->size)
+		part_len = -(file->offset - file->size);
+	return (part_len);
 }
 
 int			read_server(t_client *client)
@@ -34,17 +46,32 @@ int			read_server(t_client *client)
 	char		buffer[CLIENT_BUFFER];
 	char		**result;
 	int			i;
+	int			len;
 
 	i = 0;
+	len = 0;
 	result = NULL;
 	res = recv(client->fd, buffer, CLIENT_READ, 0);
 	if (res > 0)
 	{
+		if (client->current_file != NULL)
+		{
+			client->len += res;
+			ft_memcpy(client->tmp, buffer, res);
+			if (client->len >= get_real_len(client->current_file))
+			{
+				handle_receive_file(client, (void*)client->tmp, client->len);
+				client->len = 0;
+				ft_bzero(client->tmp, CLIENT_READ);
+			}
+			return (res);
+		}
 		buffer[res] = '\0';
 		result = ft_strsplit(buffer, '\n');
 		while (result[i])
 			from_server(result[i++], client);
-		ft_bzero(buffer, CLIENT_BUFFER);
+		if (result[1] != NULL)
+			ft_bzero(buffer, CLIENT_BUFFER);
 	}
 	return (res);
 }

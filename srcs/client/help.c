@@ -21,5 +21,6 @@ bool		help(void)
 	printf("- cd: Change the current directory of the server\n");
 	printf("- pwd: Displays the current directory path on the server\n");
 	printf("- ls: List the current directory of the server\n");
+	printf("- get: Retrieve the file from the server to the client\n");
 	return (TRUE);
 }

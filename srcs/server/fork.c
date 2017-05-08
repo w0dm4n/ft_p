@@ -42,6 +42,7 @@ void			child(t_client *client)
 		res = recv(client->fd, buffer, CLIENT_READ, 0);
 		if (res > 0)
 		{
+			buffer[res] = '\0';
 			print_received(client, buffer);
 			handle(buffer, client);
 			ft_bzero(buffer, CLIENT_READ);

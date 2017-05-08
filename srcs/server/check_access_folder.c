@@ -64,7 +64,7 @@ t_client *client)
 		return (1);
 	else
 	{
-		send_info(client, "cd: permission denied");
+		send_info(client, "ERROR: permission denied");
 		return (0);
 	}
 }
@@ -75,14 +75,16 @@ t_client *client)
 	struct stat		*file_stat;
 
 	file_stat = NULL;
+	if (ft_strlen(args) == 1)
+		ft_strcat(real_path, args);
 	if (!(file_stat = get_folder_stat(real_path, file_stat)))
 	{
-		send_info(client, "cd: no such file or directory");
+		send_info(client, "ERROR: no such file or directory");
 		return (0);
 	}
 	else if (!S_ISDIR(file_stat->st_mode))
 	{
-		send_info(client, "cd: not a directory");
+		send_info(client, "ERROR: not a directory");
 		return (0);
 	}
 	return ((check_if_readable(file_stat, args, client)) ? 1 : 0);

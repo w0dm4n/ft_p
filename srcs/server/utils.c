@@ -12,6 +12,13 @@
 
 #include "all.h"
 
+char				*check_newline(char *buffer)
+{
+	if (buffer[ft_strlen(buffer) - 1] == '\n')
+		buffer[ft_strlen(buffer) - 1] = '\0';
+	return (buffer);
+}
+
 char				*get_client_addr(struct sockaddr_in client)
 {
 	return (inet_ntoa(client.sin_addr));

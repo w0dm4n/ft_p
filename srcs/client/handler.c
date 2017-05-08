@@ -26,6 +26,9 @@ static int		handle_suite(char **split, t_client *client)
 	else if (!ft_strncmp(split[0], LS_COMMAND, \
 		ft_strlen(LS_COMMAND)))
 		return (send_ls_client(client));
+	else if (!ft_strncmp(split[0], GET_COMMAND, \
+	ft_strlen(GET_COMMAND)))
+		return (send_get_command(client, split[1]));
 	else
 		not_found();
 	return (TRUE);
@@ -34,6 +37,7 @@ static int		handle_suite(char **split, t_client *client)
 int				handle(char *entry, t_client *client)
 {
 	char	**split;
+
 
 	split = ft_strsplit(entry, ' ');
 	if (split[0] != NULL)

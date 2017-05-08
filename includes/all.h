@@ -20,6 +20,10 @@
 # include <unistd.h>
 # include <sys/stat.h>
 # include <dirent.h>
+# include <sys/types.h>
+# include <sys/uio.h>
+# include <unistd.h>
+# include <fcntl.h>
 
 /*
 ** COLORS
@@ -44,6 +48,22 @@
 # define CLEAR_SCREEN 	"\033[2J"
 # define PATH_MAX_SIZE	16192
 
+/*
+** SOCKET SIZE DEFINE
+*/
+
+# define CLIENT_BUFFER 1000025
+# define CLIENT_READ 1000024
+
+typedef struct			s_file
+{
+	struct stat			*file;
+	char				*name;
+	int					size;
+	int					offset;
+	void				*content;
+}						t_file;
+
 typedef struct			s_client
 {
 	SOCKET				fd;
@@ -52,6 +72,9 @@ typedef struct			s_client
 	char				*remote_host;
 	int					remote_port;
 	fd_set				read_fds;
+	t_file				*current_file;
+	int					len;
+	char				tmp[CLIENT_BUFFER];
 }						t_client;
 
 typedef struct			s_server
@@ -80,7 +103,16 @@ int						handle(char *buffer, t_client *client);
 bool					send_current_pwd(t_client *client);
 void					send_info(t_client *client, char *msg);
 int						check_access_folder(char *real_path, char *args, t_client *client);
+struct stat				*check_access_file(char *file, t_client *client);
 void					send_current_directory_files(t_client *client);
+void					get_file(char **datas, t_client *client);
+int						check_if_readable(struct stat *file_stat, char *args, \
+t_client *client);
+t_file					*get_file_data(char *name, struct stat *file_stat);
+char					*check_newline(char *buffer);
+void					send_file_data(t_client *client, t_file *file);
+int						get_len(int total);
+void					*get_offset(void *buff, int offset);
 
 /*
 ** CLIENT
@@ -101,6 +133,12 @@ void					print_pwd(char **split, t_client *client);
 void					print_info(char **split, t_client *client);
 bool     				send_ls_client(t_client *client);
 void					print_ls(char **split);
+bool					send_get_command(t_client *client, char *file);
+void					set_get_file(char **split, t_client *client);
+void					end_file(t_client *client);
+void					handle_receive_file(t_client *client, void *buffer, int len);
+void					send_get_file_data(t_client *client);
+int						get_len_client(int total);
 
 /*
 ** BOTH SIDES
@@ -124,21 +162,17 @@ char					*decrypt_message(char *crypted);
 # define CHDIR_COMMAND "cd"
 # define PWD_COMMAND "pwd"
 # define LS_COMMAND "ls"
-
-/*
-** SOCKET SIZE DEFINE
-*/
-
-# define CLIENT_BUFFER 8193
-# define CLIENT_READ 8192
+# define GET_COMMAND "get"
 
 /*
 ** SERVER MESSAGE
 */
 
 # define CHDIR_MESSAGE "CHDIR_MESSAGE"
-# define PWD_MESSAGE "PWD_MESSAGE"
-# define INFO_MESSAGE "INFO_MESSAGE"
-# define LS_MESSAGE   "LS_MESSAGE"
-
+# define PWD_MESSAGE   "PWD_MESSAGE"
+# define INFO_MESSAGE  "INFO_MESSAGE"
+# define LS_MESSAGE    "LS_MESSAGE"
+# define GET_MESSAGE   "GET_MESSAGE"
+# define EOF_MESSAGE   "EOF_MESSAGE"
+# define GET_DATA_MESSAGE "GET_DATA_MESSAGE"
 #endif

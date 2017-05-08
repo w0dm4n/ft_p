@@ -66,5 +66,10 @@ void		chdir_command(char **datas, t_client *client)
 		return ;
 	if (!(path = (char*)malloc(sizeof(char) * CLIENT_READ)))
 		return ;
+	if (!ft_strcmp(check_newline(datas[1]), "/"))
+	{
+		chdir("/");
+		return ;
+	}
 	chdir_command_ext(datas[1], path, 0, client);
 }

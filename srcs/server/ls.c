@@ -21,6 +21,7 @@ static char		*serialize_ls(char *data)
 	ft_strcat(to_send, LS_MESSAGE);
 	ft_strcat(to_send, ESCAPE_CHAR);
 	ft_strcat(to_send, data);
+	free(to_send);
 	return (to_send);
 }
 
@@ -38,17 +39,12 @@ void			send_file(t_client *client, char *file)
 
 void			send_current_directory_files(t_client *client)
 {
-	char				*current_path;
+	char				current_path[PATH_MAX_SIZE];
 	DIR					*dir;
 	struct dirent		*ent;
-	char				*to_send;
 
-	if (!(to_send = ft_strnew(CLIENT_READ)))
-		return ;
 	dir = NULL;
 	ent = NULL;
-	if (!(current_path = (char*)malloc(sizeof(PATH_MAX_SIZE))))
-		return ;
 	getcwd(current_path, PATH_MAX_SIZE);
 	if ((dir = opendir(current_path)) != NULL)
 	{
