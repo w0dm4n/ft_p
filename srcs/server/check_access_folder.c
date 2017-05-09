@@ -82,7 +82,7 @@ t_client *client)
 		send_info(client, "ERROR: no such file or directory");
 		return (0);
 	}
-	else if (!S_ISDIR(file_stat->st_mode))
+	if (!S_ISDIR(file_stat->st_mode) && ft_strcmp(real_path, "/tmp"))
 	{
 		send_info(client, "ERROR: not a directory");
 		return (0);
