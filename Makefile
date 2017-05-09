@@ -51,26 +51,30 @@ SRCBASE_SERVEUR	=	\
 					check_access_file.c   \
 					ls.c                  \
 					get.c                 \
-					file.c
+					file.c                \
+					receive_file.c
 
 SRCBASE_CLIENT	=	\
-					main.c         \
-					host.c	       \
-					utils.c        \
-					client.c       \
-					error.c        \
-					prompt.c       \
-					server.c       \
-					encryption.c   \
-					handler.c      \
-					help.c         \
-					chdir.c        \
-					pwd.c          \
-					info.c         \
-					ls.c           \
-					get.c          \
-					file.c
-
+					main.c              \
+					host.c	            \
+					utils.c             \
+					client.c            \
+					error.c             \
+					prompt.c            \
+					server.c            \
+					encryption.c        \
+					handler.c           \
+					help.c              \
+					chdir.c             \
+					pwd.c               \
+					info.c              \
+					ls.c                \
+					get.c               \
+					file.c              \
+					print_received.c    \
+					put.c               \
+					check_access_file.c \
+					file_send.c
 INCS		=	$(addprefix $(INCDIR), $(INCBASE))
 
 SRCS_SERVEUR		=	$(addprefix $(SRCDIR_SERVEUR), $(SRCBASE_SERVEUR))

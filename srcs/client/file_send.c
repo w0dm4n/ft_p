@@ -31,13 +31,13 @@ void				send_file_data(t_client *client, t_file *file)
 	over = FALSE;
 	if (client->current_file == NULL)
 		return ;
-	part_len = get_len(file->size);
+	part_len = get_len_client(file->size);
 	if ((file->offset + part_len) > file->size)
 	{
 		part_len = -(file->offset - file->size);
 		over = TRUE;
 	}
-	write(client->fd, get_offset(file->content, file->offset), part_len);
+	write(client->fd, file->content + file->offset, part_len);
 	file->offset += part_len;
 	printf("File [%s]: [%d/%d] bytes sent\n", file->name, \
 	file->offset, file->size);

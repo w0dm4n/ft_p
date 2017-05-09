@@ -24,6 +24,7 @@
 # include <sys/uio.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <sys/ioctl.h>
 
 /*
 ** COLORS
@@ -52,8 +53,8 @@
 ** SOCKET SIZE DEFINE
 */
 
-# define CLIENT_BUFFER 1000025
-# define CLIENT_READ 1000024
+# define CLIENT_BUFFER 10025
+# define CLIENT_READ 10024
 
 typedef struct			s_file
 {
@@ -75,6 +76,8 @@ typedef struct			s_client
 	t_file				*current_file;
 	int					len;
 	char				tmp[CLIENT_BUFFER];
+	bool				receiving;
+	bool				sending;
 }						t_client;
 
 typedef struct			s_server
@@ -109,10 +112,11 @@ void					get_file(char **datas, t_client *client);
 int						check_if_readable(struct stat *file_stat, char *args, \
 t_client *client);
 t_file					*get_file_data(char *name, struct stat *file_stat);
-char					*check_newline(char *buffer);
 void					send_file_data(t_client *client, t_file *file);
 int						get_len(int total);
 void					*get_offset(void *buff, int offset);
+void					set_receive_file(char **split, t_client *client);
+void					send_get_client_data(t_client *client);
 
 /*
 ** CLIENT
@@ -139,6 +143,9 @@ void					end_file(t_client *client);
 void					handle_receive_file(t_client *client, void *buffer, int len);
 void					send_get_file_data(t_client *client);
 int						get_len_client(int total);
+void					print_received_file(t_client *client);
+int						get_line(void);
+bool					send_put_command(t_client *client, char *file);
 
 /*
 ** BOTH SIDES
@@ -150,7 +157,7 @@ char					*int_to_hexastring(char c);
 char					hexastring_to_int(char *s);
 char					*encrypt_message(char *msg);
 char					*decrypt_message(char *crypted);
-
+char					*check_newline(char *buffer);
 
 /*
 ** CLIENT COMMANDS
@@ -163,6 +170,7 @@ char					*decrypt_message(char *crypted);
 # define PWD_COMMAND "pwd"
 # define LS_COMMAND "ls"
 # define GET_COMMAND "get"
+# define PUT_COMMAND "put"
 
 /*
 ** SERVER MESSAGE
@@ -175,4 +183,5 @@ char					*decrypt_message(char *crypted);
 # define GET_MESSAGE   "GET_MESSAGE"
 # define EOF_MESSAGE   "EOF_MESSAGE"
 # define GET_DATA_MESSAGE "GET_DATA_MESSAGE"
+# define PUT_MESSAGE "PUT_MESSAGE"
 #endif

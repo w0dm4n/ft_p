@@ -1,59 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get.c                                              :+:      :+:    :+:   */
+/*   receive_file.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frmarinh <frmarinh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/08 10:12:58 by frmarinh          #+#    #+#             */
-/*   Updated: 2017/05/08 10:13:05 by frmarinh         ###   ########.fr       */
+/*   Created: 2017/05/09 19:49:51 by frmarinh          #+#    #+#             */
+/*   Updated: 2017/05/09 19:49:58 by frmarinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "all.h"
 
-void				end_file(t_client *client)
-{
-	char	*path;
-	int		fd;
-
-	fd = 0;
-	if (!(path = ft_strnew(1024)))
-		return ;
-	if (client->current_file != NULL)
-	{
-		client->receiving = FALSE;
-		print_prompt(client);
-		ft_strcat(path, "uploads/");
-		ft_strcat(path, client->current_file->name);
-		if ((fd = open(path, O_RDWR | O_CREAT, 0777)) != -1)
-			write(fd, client->current_file->content, \
-				client->current_file->size);
-		free(client->current_file->content);
-		free(client->current_file);
-		client->current_file = NULL;
-	}
-	free(path);
-}
-
-static char			*serialize_get(char *file)
+static char			*serialize_data(void)
 {
 	char	*to_send;
 
 	if (!(to_send = ft_strnew(CLIENT_READ)))
 		return (NULL);
-	ft_strcat(to_send, GET_MESSAGE);
+	ft_strcat(to_send, GET_DATA_MESSAGE);
 	ft_strcat(to_send, ESCAPE_CHAR);
-	ft_strcat(to_send, file);
 	return (to_send);
 }
 
-bool				send_get_command(t_client *client, char *file)
+void				send_get_client_data(t_client *client)
 {
-	if (client != NULL && file != NULL)
-		send_data(client, serialize_get(file));
-	return (FALSE);
+	if (client != NULL)
+		send_data(client, serialize_data());
 }
+
 
 static t_file		*init_file_data(char *name, int len)
 {
@@ -71,7 +46,7 @@ static t_file		*init_file_data(char *name, int len)
 	return (data);
 }
 
-void				set_get_file(char **split, t_client *client)
+void			set_receive_file(char **split, t_client *client)
 {
 	char	**datas;
 
@@ -84,8 +59,10 @@ void				set_get_file(char **split, t_client *client)
 			if (!(client->current_file = init_file_data(datas[0], \
 			ft_atoi(datas[1]))))
 				return ;
-			send_get_file_data(client);
+			send_get_client_data(client);
 			client->receiving = TRUE;
+			printf("Receiving the file %s from client (%s:%d)\n", datas[0], \
+			get_client_addr(client->in), get_client_port(client->in));
 		}
 	}
 }

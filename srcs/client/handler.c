@@ -29,6 +29,9 @@ static int		handle_suite(char **split, t_client *client)
 	else if (!ft_strncmp(split[0], GET_COMMAND, \
 	ft_strlen(GET_COMMAND)))
 		return (send_get_command(client, split[1]));
+	else if (!ft_strncmp(split[0], PUT_COMMAND, \
+	ft_strlen(PUT_COMMAND)))
+		return (send_put_command(client, split[1]));
 	else
 		not_found();
 	return (TRUE);
@@ -38,7 +41,6 @@ int				handle(char *entry, t_client *client)
 {
 	char	**split;
 
-
 	split = ft_strsplit(entry, ' ');
 	if (split[0] != NULL)
 	{
@@ -47,7 +49,7 @@ int				handle(char *entry, t_client *client)
 			return (help());
 		else if (!ft_strncmp(split[0], CLEAR_COMMAND, \
 			ft_strlen(CLEAR_COMMAND)))
-			ft_putstr(CLEAR_SCREEN);
+			printf("\033[2J\033[;H\n");
 		else if (!ft_strncmp(split[0], QUIT_COMMAND, \
 			ft_strlen(QUIT_COMMAND)))
 			exit(0);

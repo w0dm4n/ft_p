@@ -24,6 +24,8 @@ static int		handle_esc(char **split, t_client *client, char *data)
 		get_file(split, client);
 	else if (!ft_strcmp(split[0], GET_DATA_MESSAGE))
 		send_file_data(client, client->current_file);
+	else if (!ft_strcmp(split[0], PUT_MESSAGE))
+		set_receive_file(split, client);
 	return (TRUE);
 }
 

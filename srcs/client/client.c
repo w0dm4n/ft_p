@@ -32,6 +32,8 @@ t_client			*get_client(char *host, int port)
 	client->remote_host = host;
 	client->remote_port = port;
 	client->current_file = NULL;
+	client->sending = FALSE;
+	client->receiving = FALSE;
 	client->len = 0;
 	ft_bzero(client->tmp, CLIENT_READ);
 	return (client);

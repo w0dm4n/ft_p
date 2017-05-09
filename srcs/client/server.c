@@ -29,15 +29,32 @@ void		from_server(char *msg, t_client *client)
 			set_get_file(split, client);
 		else if (!ft_strcmp(split[0], EOF_MESSAGE))
 			end_file(client);
+		else if (!ft_strcmp(split[0], GET_DATA_MESSAGE))
+			send_file_data(client, client->current_file);
 	}
 }
 
 int			get_real_len(t_file *file)
 {
-	int part_len = get_len_client(file->size);
+	int part_len;
+
+	part_len = get_len_client(file->size);
 	if ((file->offset + part_len) > file->size)
 		part_len = -(file->offset - file->size);
 	return (part_len);
+}
+
+static int	receiving_file(t_client *client, char *buffer, int res)
+{
+	client->len += res;
+	ft_memcpy(client->tmp, buffer, res);
+	if (client->len >= get_real_len(client->current_file))
+	{
+		handle_receive_file(client, (void*)client->tmp, client->len);
+		client->len = 0;
+		ft_bzero(client->tmp, CLIENT_READ);
+	}
+	return (res);
 }
 
 int			read_server(t_client *client)
@@ -56,15 +73,13 @@ int			read_server(t_client *client)
 	{
 		if (client->current_file != NULL)
 		{
-			client->len += res;
-			ft_memcpy(client->tmp, buffer, res);
-			if (client->len >= get_real_len(client->current_file))
+			if (client->receiving == TRUE)
+				return (receiving_file(client, buffer, res));
+			else if (client->sending == TRUE)
 			{
-				handle_receive_file(client, (void*)client->tmp, client->len);
-				client->len = 0;
-				ft_bzero(client->tmp, CLIENT_READ);
+				send_file_data(client, client->current_file);
+				return (res);
 			}
-			return (res);
 		}
 		buffer[res] = '\0';
 		result = ft_strsplit(buffer, '\n');

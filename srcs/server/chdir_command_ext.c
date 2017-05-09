@@ -16,7 +16,7 @@ void			send_new_path(t_client *client, char *path)
 {
 	char	*message;
 
-	if(!(message = ft_strnew(CLIENT_READ)))
+	if (!(message = ft_strnew(CLIENT_READ)))
 		return ;
 	ft_strcat(message, "SUCCESS: You are now in the directory ");
 	ft_strcat(message, path);

@@ -28,19 +28,20 @@ int					get_len_client(int total)
 
 void				handle_receive_file(t_client *client, void *buffer, int len)
 {
-	ft_memcpy(client->current_file->content + client->current_file->offset, buffer, len);
+	ft_memcpy(client->current_file->content + client->current_file->offset, \
+	buffer, len);
 	client->current_file->offset += len;
 	if (client->current_file->offset >= client->current_file->size)
 	{
 		if (client->current_file->offset <= 1024)
-			printf("File [%s]: [%d/%d] bytes received\n", client->current_file->name, \
-				client->current_file->offset, client->current_file->size);
-		printf("Transfert ended !\n");
+			print_received_file(client);
+		printf("\033[%dB", get_line());
+		printf("The file %s was downloaded successfully !\n", \
+		client->current_file->name);
 		end_file(client);
-		return;
+		return ;
 	}
-	printf("File [%s]: [%d/%d] bytes received\n", client->current_file->name, \
-	client->current_file->offset, client->current_file->size);
+	print_received_file(client);
 	send_get_file_data(client);
 	ft_bzero(buffer, CLIENT_BUFFER);
 }

@@ -58,3 +58,10 @@ char			hexastring_to_int(char *s)
 	ft_strdel(&s);
 	return (xor);
 }
+
+char				*check_newline(char *buffer)
+{
+	if (buffer[ft_strlen(buffer) - 1] == '\n')
+		buffer[ft_strlen(buffer) - 1] = '\0';
+	return (buffer);
+}

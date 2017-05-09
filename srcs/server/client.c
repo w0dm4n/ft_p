@@ -31,6 +31,7 @@ t_client			*alloc_new_client(SOCKET sock, struct sockaddr_in in)
 	client->in = in;
 	client->connected = TRUE;
 	client->current_file = NULL;
+	client->receiving = FALSE;
 	return (client);
 }
 
