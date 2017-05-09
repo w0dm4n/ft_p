@@ -34,7 +34,7 @@ struct stat				*check_access_file(char *file, t_client *client)
 			return (NULL);
 		if (!S_ISREG(file_stat->st_mode))
 		{
-			send_info(client, "ERROR: not a directory");
+			send_info(client, "ERROR: not a file");
 			return (NULL);
 		}
 		return (file_stat);

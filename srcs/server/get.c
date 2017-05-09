@@ -43,15 +43,7 @@ int			get_len(int total)
 
 void		*get_offset(void *buff, int offset)
 {
-	int i;
-
-	i = 0;
-	while (i < offset)
-	{
-		buff++;
-		i++;
-	}
-	return (buff);
+	return (buff + offset);
 }
 
 void			get_file(char **datas, t_client *client)
