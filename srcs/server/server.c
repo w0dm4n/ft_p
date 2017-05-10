@@ -43,7 +43,10 @@ void			get_server_path(t_server *server, char *custom_path)
 	if (custom_path != NULL)
 	{
 		if (check_access_folder(custom_path, server->path, NULL))
+		{
 			server->path = custom_path;
+			chdir(server->path);
+		}
 		else
 		{
 			printf("Hey, you need to give me a real custom directory...\n");
