@@ -65,6 +65,13 @@ typedef struct			s_file
 	void				*content;
 }						t_file;
 
+typedef struct			s_server
+{
+	SOCKET				fd;
+	struct sockaddr_in	in;
+	char				*path;
+}						t_server;
+
 typedef struct			s_client
 {
 	SOCKET				fd;
@@ -78,20 +85,15 @@ typedef struct			s_client
 	char				tmp[CLIENT_BUFFER];
 	bool				receiving;
 	bool				sending;
+	t_server			*server;
 }						t_client;
-
-typedef struct			s_server
-{
-	SOCKET				fd;
-	struct sockaddr_in	in;
-}						t_server;
 
 /*
 ** SERVER
 */
 
 void					print_ascii_art(void);
-void					init_server(int port);
+void					init_server(int port, char *custom_path);
 void					accept_client(t_server *server);
 void    				child(t_client *client);
 int						get_client_port(struct sockaddr_in client);
@@ -117,6 +119,10 @@ int						get_len(int total);
 void					*get_offset(void *buff, int offset);
 void					set_receive_file(char **split, t_client *client);
 void					send_get_client_data(t_client *client);
+void					end_file_server(t_client *client);
+int						get_real_len(t_file *file);
+void					send_new_path(t_client *client, char *path);
+
 
 /*
 ** CLIENT
@@ -145,7 +151,11 @@ void					send_get_file_data(t_client *client);
 int						get_len_client(int total);
 void					print_received_file(t_client *client);
 int						get_line(void);
+int						get_cols(void);
+int						get_percent(t_file *file);
 bool					send_put_command(t_client *client, char *file);
+void					print_send_file(t_client *client);
+char					*check_file_name(char *file);
 
 /*
 ** BOTH SIDES

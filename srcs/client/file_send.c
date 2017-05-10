@@ -23,6 +23,20 @@ static void			send_end_of_file(t_client *client, t_file *data)
 	send_data(client, to_send);
 }
 
+static void			uploading_over(t_client *client)
+{
+	if (client->current_file != NULL)
+	{
+		printf("\033[%dB", get_line());
+		printf("The file %s was sent to the server !\n", \
+		client->current_file->name);
+		print_prompt(client);
+		free(client->current_file->content);
+		free(client->current_file);
+		client->current_file = NULL;
+	}
+}
+
 void				send_file_data(t_client *client, t_file *file)
 {
 	int		part_len;
@@ -32,31 +46,23 @@ void				send_file_data(t_client *client, t_file *file)
 	if (client->current_file == NULL)
 		return ;
 	part_len = get_len_client(file->size);
-	if ((file->offset + part_len) > file->size)
+	if ((file->offset + part_len) >= file->size)
 	{
 		part_len = -(file->offset - file->size);
 		over = TRUE;
 	}
 	write(client->fd, file->content + file->offset, part_len);
 	file->offset += part_len;
-	printf("File [%s]: [%d/%d] bytes sent\n", file->name, \
-	file->offset, file->size);
+	print_send_file(client);
 	if (over)
-	{
-		if (client->current_file != NULL)
-		{
-			free(client->current_file->content);
-			free(client->current_file);
-			client->current_file = NULL;
-		}
-	}
+		uploading_over(client);
 }
 
 static t_file		*init_file_data(char *name, struct stat *file_stat)
 {
 	t_file		*data;
 
-	if(!(data = (t_file*)malloc(sizeof(t_file))))
+	if (!(data = (t_file*)malloc(sizeof(t_file))))
 		return (NULL);
 	data->file = file_stat;
 	data->name = name;

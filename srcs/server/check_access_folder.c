@@ -21,6 +21,8 @@ char			*try_hidden_folder(char *path, int i, int i_2, char *new)
 	if (!(file_name = malloc(sizeof(char) * 1024)))
 		return (NULL);
 	i = ft_strlen(path);
+	if (i <= 0)
+		return (path);
 	while (path[i] != '/')
 		i--;
 	while (i_2 < i)

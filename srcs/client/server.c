@@ -57,6 +57,18 @@ static int	receiving_file(t_client *client, char *buffer, int res)
 	return (res);
 }
 
+static int	handle_file(t_client *client, char *buffer, int res)
+{
+	if (client->receiving == TRUE)
+		return (receiving_file(client, buffer, res));
+	else if (client->sending == TRUE)
+	{
+		send_file_data(client, client->current_file);
+		return (res);
+	}
+	return (res);
+}
+
 int			read_server(t_client *client)
 {
 	int			res;
@@ -72,15 +84,7 @@ int			read_server(t_client *client)
 	if (res > 0)
 	{
 		if (client->current_file != NULL)
-		{
-			if (client->receiving == TRUE)
-				return (receiving_file(client, buffer, res));
-			else if (client->sending == TRUE)
-			{
-				send_file_data(client, client->current_file);
-				return (res);
-			}
-		}
+			return (handle_file(client, buffer, res));
 		buffer[res] = '\0';
 		result = ft_strsplit(buffer, '\n');
 		while (result[i])

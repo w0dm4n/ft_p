@@ -12,6 +12,16 @@
 
 #include "all.h"
 
+int					get_real_len(t_file *file)
+{
+	int part_len;
+
+	part_len = get_len(file->size);
+	if ((file->offset + part_len) > file->size)
+		part_len = -(file->offset - file->size);
+	return (part_len);
+}
+
 static void			send_end_of_file(t_client *client, t_file *data)
 {
 	char	*to_send;
@@ -56,7 +66,7 @@ static t_file		*init_file_data(char *name, struct stat *file_stat)
 {
 	t_file		*data;
 
-	if(!(data = (t_file*)malloc(sizeof(t_file))))
+	if (!(data = (t_file*)malloc(sizeof(t_file))))
 		return (NULL);
 	data->file = file_stat;
 	data->name = name;

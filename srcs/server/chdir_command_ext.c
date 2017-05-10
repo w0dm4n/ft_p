@@ -24,6 +24,19 @@ void			send_new_path(t_client *client, char *path)
 	free(message);
 }
 
+static bool		check_execution_folder(t_client *client, \
+char *current, char *path_to)
+{
+	if (ft_strncmp(ft_strtolower(client->server->path), \
+	ft_strtolower(path_to), ft_strlen(client->server->path)))
+	{
+		send_info(client, "ERROR: Access denied on this path !");
+		chdir(current);
+		return (FALSE);
+	}
+	return (TRUE);
+}
+
 void			chdir_command_ext(char *args, char *path, int args_nbr, \
 t_client *client)
 {
@@ -35,16 +48,17 @@ t_client *client)
 	args = ft_strtrim(args);
 	if (args_nbr == 0)
 	{
-		if (!ft_strcmp(args, "/"))
-			change_folder("/", 1);
 		if (!ft_strcmp(args, ".") || !ft_strcmp(args, "./"))
 			return ;
 		if (get_path(current_path, args, client))
 		{
-			send_new_path(client, args);
 			chdir(args);
 			getcwd(path, CLIENT_READ);
-			change_folder(path, 0);
+			if (check_execution_folder(client, current_path, path))
+			{
+				change_folder(path, TRUE);
+				send_new_path(client, args);
+			}
 		}
 	}
 	else

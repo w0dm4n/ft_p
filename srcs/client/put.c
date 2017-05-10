@@ -26,7 +26,7 @@ static char				*get_ptr(char *file, int index)
 	return (file);
 }
 
-static char				*check_file_name(char *file)
+char					*check_file_name(char *file)
 {
 	int	i;
 
@@ -40,7 +40,7 @@ static char				*check_file_name(char *file)
 	return (file);
 }
 
-static char			*serialize_put_begin(t_file *data)
+static char				*serialize_put_begin(t_file *data)
 {
 	char	*to_send;
 
@@ -54,7 +54,7 @@ static char			*serialize_put_begin(t_file *data)
 	return (to_send);
 }
 
-bool				send_put_command(t_client *client, char *file)
+bool					send_put_command(t_client *client, char *file)
 {
 	struct stat		*file_stat;
 

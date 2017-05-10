@@ -59,7 +59,7 @@ char			hexastring_to_int(char *s)
 	return (xor);
 }
 
-char				*check_newline(char *buffer)
+char			*check_newline(char *buffer)
 {
 	if (buffer[ft_strlen(buffer) - 1] == '\n')
 		buffer[ft_strlen(buffer) - 1] = '\0';

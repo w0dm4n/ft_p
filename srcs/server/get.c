@@ -27,7 +27,7 @@ static char		*serialize_begin(t_file *data)
 	return (to_send);
 }
 
-int			get_len(int total)
+int				get_len(int total)
 {
 	if (total <= 1024)
 		return (total);
@@ -41,7 +41,7 @@ int			get_len(int total)
 		return (10024);
 }
 
-void		*get_offset(void *buff, int offset)
+void			*get_offset(void *buff, int offset)
 {
 	return (buff + offset);
 }

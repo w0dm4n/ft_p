@@ -25,7 +25,7 @@ void				end_file(t_client *client)
 		client->receiving = FALSE;
 		print_prompt(client);
 		ft_strcat(path, "uploads/");
-		ft_strcat(path, client->current_file->name);
+		ft_strcat(path, check_file_name(client->current_file->name));
 		if ((fd = open(path, O_RDWR | O_CREAT, 0777)) != -1)
 			write(fd, client->current_file->content, \
 				client->current_file->size);

@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   print_send_file.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frmarinh <frmarinh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/27 01:27:42 by frmarinh          #+#    #+#             */
-/*   Updated: 2017/04/27 01:27:43 by frmarinh         ###   ########.fr       */
+/*   Created: 2017/05/10 17:46:32 by frmarinh          #+#    #+#             */
+/*   Updated: 2017/05/10 17:46:39 by frmarinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "all.h"
 
-int	main(int argc, char **argv)
+void			print_send_file(t_client *client)
 {
-	print_ascii_art();
-	if (argc == 2)
-		init_server(ft_atoi(argv[1]), NULL);
-	else if (argc == 3)
-		init_server(ft_atoi(argv[1]), argv[2]);
-	else
+	if (client->current_file != NULL)
 	{
-		printf("ft_p: You must give me an arg as listen port ");
-		printf("and if you want a custom start path !\n");
+		printf("%s", "\033[2J");
+		printf("\033[;H");
+		printf("\033[%dB", (get_line() / 2));
+		printf("\033[%dC", (get_cols() / 2) - 10);
+		printf("%s%d / 100 %c sending... %s\n", "\e[38;05;168m", \
+		get_percent(client->current_file), '%', KNRM);
 	}
-	return (0);
 }

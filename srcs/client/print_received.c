@@ -12,7 +12,7 @@
 
 #include "all.h"
 
-static int				get_percent(t_file *file)
+int						get_percent(t_file *file)
 {
 	size_t			current_offset;
 	size_t			percent;
@@ -22,7 +22,7 @@ static int				get_percent(t_file *file)
 	return (percent);
 }
 
-static int				get_cols(void)
+int						get_cols(void)
 {
 	struct winsize	size;
 

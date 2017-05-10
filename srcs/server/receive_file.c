@@ -12,6 +12,24 @@
 
 #include "all.h"
 
+void				end_file_server(t_client *client)
+{
+	int		fd;
+
+	fd = 0;
+	if (client->current_file != NULL)
+	{
+		client->receiving = FALSE;
+		if ((fd = open(client->current_file->name, \
+			O_RDWR | O_CREAT, 0777)) != -1)
+			write(fd, client->current_file->content, \
+				client->current_file->size);
+		free(client->current_file->content);
+		free(client->current_file);
+		client->current_file = NULL;
+	}
+}
+
 static char			*serialize_data(void)
 {
 	char	*to_send;
@@ -29,7 +47,6 @@ void				send_get_client_data(t_client *client)
 		send_data(client, serialize_data());
 }
 
-
 static t_file		*init_file_data(char *name, int len)
 {
 	t_file		*data;
@@ -46,7 +63,7 @@ static t_file		*init_file_data(char *name, int len)
 	return (data);
 }
 
-void			set_receive_file(char **split, t_client *client)
+void				set_receive_file(char **split, t_client *client)
 {
 	char	**datas;
 

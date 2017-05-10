@@ -12,7 +12,7 @@
 
 #include "all.h"
 
-static void		print_received(t_client *client, char *buffer)
+static void				print_received(t_client *client, char *buffer)
 {
 	buffer = encrypt_message(buffer);
 	printf("%sReceived message from client (%s:%d): %s%s\n", KMAG, \
@@ -20,7 +20,7 @@ static void		print_received(t_client *client, char *buffer)
 		buffer, KNRM);
 }
 
-static void		close_child(t_client *client)
+static void				close_child(t_client *client)
 {
 	close(client->fd);
 	printf("%sOne client disconnected (%s:%d)%s\n", KRED, \
@@ -28,53 +28,24 @@ static void		close_child(t_client *client)
 	exit(0);
 }
 
-static void				end_file_server(t_client *client)
-{
-	int		fd;
-
-	fd = 0;
-	if (client->current_file != NULL)
-	{
-		client->receiving = FALSE;
-		if ((fd = open(client->current_file->name, O_RDWR | O_CREAT, 0777)) != -1)
-			write(fd, client->current_file->content, \
-				client->current_file->size);
-		free(client->current_file->content);
-		free(client->current_file);
-		client->current_file = NULL;
-	}
-}
-
-static void				handle_receive_file_server(t_client *client, void *buffer, int len)
+static void				handle_receive_file_server(t_client *client, \
+void *buffer, int len)
 {
 	ft_memcpy(client->current_file->content + client->current_file->offset, \
 	buffer, len);
 	client->current_file->offset += len;
 	if (client->current_file->offset >= client->current_file->size)
 	{
-		//if (client->current_file->offset <= 1024)
-		//	print_received_file(client);
 		printf("The file %s was received successfully !\n", \
 		client->current_file->name);
 		end_file_server(client);
 		return ;
 	}
-	//print_received_file(client);
 	send_get_client_data(client);
 	ft_bzero(buffer, CLIENT_BUFFER);
 }
 
-static int			get_real_len(t_file *file)
-{
-	int part_len;
-
-	part_len = get_len(file->size);
-	if ((file->offset + part_len) > file->size)
-		part_len = -(file->offset - file->size);
-	return (part_len);
-}
-
-static int		receiving_file(t_client *client, char *buffer, int res)
+static int				receiving_file(t_client *client, char *buffer, int res)
 {
 	client->len += res;
 	ft_memcpy(client->tmp, buffer, res);
@@ -87,7 +58,7 @@ static int		receiving_file(t_client *client, char *buffer, int res)
 	return (res);
 }
 
-void			child(t_client *client)
+void					child(t_client *client)
 {
 	char		buffer[CLIENT_BUFFER];
 	int			res;

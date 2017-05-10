@@ -68,7 +68,13 @@ void		chdir_command(char **datas, t_client *client)
 		return ;
 	if (!ft_strcmp(check_newline(datas[1]), "/"))
 	{
-		chdir("/");
+		if (!ft_strcmp(client->server->path, "/"))
+		{
+			chdir("/");
+			send_new_path(client, "/");
+		}
+		else
+			send_info(client, "ERROR: Access denied on this path !");
 		return ;
 	}
 	chdir_command_ext(datas[1], path, 0, client);

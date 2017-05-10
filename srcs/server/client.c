@@ -21,7 +21,8 @@ void				send_data(t_client *client, char *msg)
 	}
 }
 
-t_client			*alloc_new_client(SOCKET sock, struct sockaddr_in in)
+t_client			*alloc_new_client(SOCKET sock, struct sockaddr_in in, \
+t_server *server)
 {
 	t_client	*client;
 
@@ -32,6 +33,7 @@ t_client			*alloc_new_client(SOCKET sock, struct sockaddr_in in)
 	client->connected = TRUE;
 	client->current_file = NULL;
 	client->receiving = FALSE;
+	client->server = server;
 	return (client);
 }
 
@@ -49,7 +51,7 @@ void				accept_client(t_server *server)
 		print_error("Can't accept one client connection", 0);
 	else
 	{
-		if (!(client = alloc_new_client(sock, in)))
+		if (!(client = alloc_new_client(sock, in, server)))
 			return ;
 		child_pid = fork();
 		if (child_pid == 0)

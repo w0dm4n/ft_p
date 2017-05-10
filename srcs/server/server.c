@@ -33,17 +33,37 @@ t_server		*get_socket(int port)
 		print_error("Can't bind socket", -1);
 	if ((listen(server->fd, 3)) == -1)
 		print_error("Can't listen the socket", -1);
-	printf("ft_p launched on port %d, waiting for connections...\n", port);
 	return (server);
 }
 
-void			init_server(int port)
+void			get_server_path(t_server *server, char *custom_path)
+{
+	if (!(server->path = ft_strnew(1024)))
+		return ;
+	if (custom_path != NULL)
+	{
+		if (check_access_folder(custom_path, server->path, NULL))
+			server->path = custom_path;
+		else
+		{
+			printf("Hey, you need to give me a real custom directory...\n");
+			exit(0);
+		}
+	}
+	else
+		getcwd(server->path, 1024);
+}
+
+void			init_server(int port, char *custom_path)
 {
 	t_server	*server;
 
 	if (port > 0 && port <= MAX_PORT)
 	{
 		server = get_socket(port);
+		get_server_path(server, custom_path);
+		printf("ft_p launched on port %d, waiting for connections...\n", \
+		port);
 		while (42)
 			accept_client(server);
 	}

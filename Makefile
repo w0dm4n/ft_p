@@ -17,7 +17,7 @@ NAMEBASE    =   $(shell basename $(NAME))
 LENGTHNAME	=	`printf "%s" $(NAMEBASE) | wc -c`
 MAX_COLS	=	$$(echo "$$(tput cols)-24-$(LENGTHNAME)"|bc)
 
-CC			=	gcc
+CC			=	gcc -ggdb
 FLAGS       =
 #FLAGS		=	-Wall -Wextra -Werror -O3
 FLAGS_O		=	
@@ -74,7 +74,8 @@ SRCBASE_CLIENT	=	\
 					print_received.c    \
 					put.c               \
 					check_access_file.c \
-					file_send.c
+					file_send.c         \
+					print_send_file.c
 INCS		=	$(addprefix $(INCDIR), $(INCBASE))
 
 SRCS_SERVEUR		=	$(addprefix $(SRCDIR_SERVEUR), $(SRCBASE_SERVEUR))
