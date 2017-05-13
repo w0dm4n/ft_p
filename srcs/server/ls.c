@@ -12,19 +12,6 @@
 
 #include "all.h"
 
-static char		*serialize_ls(char *data)
-{
-	char	*to_send;
-
-	if (!(to_send = ft_strnew(CLIENT_READ)))
-		return (NULL);
-	ft_strcat(to_send, LS_MESSAGE);
-	ft_strcat(to_send, ESCAPE_CHAR);
-	ft_strcat(to_send, data);
-	free(to_send);
-	return (to_send);
-}
-
 void			send_file(t_client *client, char *file)
 {
 	char data[CLIENT_READ];

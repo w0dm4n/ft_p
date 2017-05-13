@@ -28,9 +28,10 @@ struct stat				*check_access_file(char *file, t_client *client)
 {
 	struct stat		*file_stat;
 
+	file_stat = NULL;
 	if ((file_stat = get_file_stat(file, file_stat)) != NULL)
 	{
-		if (!check_if_readable(file_stat, file, client))
+		if (!check_if_readable(file_stat, client))
 			return (NULL);
 		if (!S_ISREG(file_stat->st_mode))
 		{

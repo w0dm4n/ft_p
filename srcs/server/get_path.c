@@ -26,9 +26,9 @@ char	*add_folder_on_path(char *path, char *folder)
 
 char	*go_above(char *args, char *path, int i, int i_2)
 {
-	char	*folder;
+	char	folder[1025];
 
-	folder = ft_strnew(1024);
+	ft_bzero(folder, 1024);
 	while (args[i++])
 	{
 		if (args[i] == '.' && args[i + 1] == '.' && args[i + 2] == '/')
@@ -54,9 +54,9 @@ char	*go_above(char *args, char *path, int i, int i_2)
 
 char	*go_inside(char *args, char *path, int i, int i_2)
 {
-	char	*folder;
+	char	folder[1025];
 
-	folder = ft_strnew(1024);
+	ft_bzero(folder, 1024);
 	while (args[i])
 	{
 		if (args[i] == '/' || args[i + 1] == '\0'

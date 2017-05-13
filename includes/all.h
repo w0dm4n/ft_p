@@ -111,7 +111,7 @@ int						check_access_folder(char *real_path, char *args, t_client *client);
 struct stat				*check_access_file(char *file, t_client *client);
 void					send_current_directory_files(t_client *client);
 void					get_file(char **datas, t_client *client);
-int						check_if_readable(struct stat *file_stat, char *args, \
+int						check_if_readable(struct stat *file_stat, \
 t_client *client);
 t_file					*get_file_data(char *name, struct stat *file_stat);
 void					send_file_data(t_client *client, t_file *file);

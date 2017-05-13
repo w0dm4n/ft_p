@@ -22,17 +22,6 @@ int					get_real_len(t_file *file)
 	return (part_len);
 }
 
-static void			send_end_of_file(t_client *client, t_file *data)
-{
-	char	*to_send;
-
-	if (!(to_send = ft_strnew(CLIENT_READ)))
-		return ;
-	ft_strcat(to_send, EOF_MESSAGE);
-	ft_strcat(to_send, ESCAPE_CHAR);
-	send_data(client, to_send);
-}
-
 void				send_file_data(t_client *client, t_file *file)
 {
 	int		part_len;

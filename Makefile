@@ -6,7 +6,7 @@
 #    By: frmarinh <frmarinh@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 17:57:50 by frmarinh          #+#    #+#              #
-#    Updated: 2017/05/08 16:26:41 by frmarinh         ###   ########.fr        #
+#    Updated: 2017/05/13 21:41:31 by frmarinh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,8 +18,7 @@ LENGTHNAME	=	`printf "%s" $(NAMEBASE) | wc -c`
 MAX_COLS	=	$$(echo "$$(tput cols)-24-$(LENGTHNAME)"|bc)
 
 CC			=	gcc -ggdb
-FLAGS       =
-#FLAGS		=	-Wall -Wextra -Werror -O3
+FLAGS		=	-Wall -Wextra -Werror -O3
 FLAGS_O		=	
 
 SRCDIR_SERVEUR		=	srcs/server/

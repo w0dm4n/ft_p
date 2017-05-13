@@ -12,7 +12,7 @@
 
 #include "all.h"
 
-static int		handle_esc(char **split, t_client *client, char *data)
+static int		handle_esc(char **split, t_client *client)
 {
 	if (!ft_strcmp(split[0], PWD_MESSAGE))
 		return (send_current_pwd(client));
@@ -37,7 +37,7 @@ int				handle(char *buffer, t_client *client)
 	{
 		split = ft_strsplit(buffer, ESCAPE_CHAR[0]);
 		if (split[0] != NULL)
-			return (handle_esc(split, client, buffer));
+			return (handle_esc(split, client));
 	}
 	return (TRUE);
 }

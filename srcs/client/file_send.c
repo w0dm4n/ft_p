@@ -12,17 +12,6 @@
 
 #include "all.h"
 
-static void			send_end_of_file(t_client *client, t_file *data)
-{
-	char	*to_send;
-
-	if (!(to_send = ft_strnew(CLIENT_READ)))
-		return ;
-	ft_strcat(to_send, EOF_MESSAGE);
-	ft_strcat(to_send, ESCAPE_CHAR);
-	send_data(client, to_send);
-}
-
 static void			uploading_over(t_client *client)
 {
 	if (client->current_file != NULL)

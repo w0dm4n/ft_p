@@ -24,13 +24,14 @@ static struct stat		*get_file_stat(char *file, struct stat *file_stat)
 	return (tmp);
 }
 
-int						check_if_readable(struct stat *file_stat, char *args, \
+int						check_if_readable(struct stat *file_stat, \
 t_client *client)
 {
 	if (file_stat->st_mode & S_IRUSR)
 		return (1);
 	else
 	{
+		(void)client;
 		printf("ERROR: permission denied\n");
 		return (0);
 	}
@@ -40,9 +41,10 @@ struct stat				*check_access_file(char *file, t_client *client)
 {
 	struct stat		*file_stat;
 
+	file_stat = NULL;
 	if ((file_stat = get_file_stat(file, file_stat)) != NULL)
 	{
-		if (!check_if_readable(file_stat, file, client))
+		if (!check_if_readable(file_stat, client))
 			return (NULL);
 		if (!S_ISREG(file_stat->st_mode))
 		{

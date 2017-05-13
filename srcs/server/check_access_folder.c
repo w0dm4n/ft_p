@@ -14,15 +14,12 @@
 
 char			*try_hidden_folder(char *path, int i, int i_2, char *new)
 {
-	char	*file_name;
+	char	file_name[1025];
 
 	if (!(new = malloc(sizeof(char) * PATH_MAX_SIZE)))
 		return (NULL);
-	if (!(file_name = malloc(sizeof(char) * 1024)))
-		return (NULL);
+	ft_bzero(file_name, 1024);
 	i = ft_strlen(path);
-	if (i <= 0)
-		return (path);
 	while (path[i] != '/')
 		i--;
 	while (i_2 < i)
@@ -52,14 +49,15 @@ struct stat		*get_folder_stat(char *path, struct stat *file_stat)
 		return (NULL);
 	if (lstat(path, tmp) < 0)
 	{
-		path = try_hidden_folder(path, 0, 0, NULL);
+		if (path != NULL && ft_strlen(path) > 0)
+			path = try_hidden_folder(path, 0, 0, NULL);
 		if (lstat(path, tmp) < 0)
 			return (NULL);
 	}
 	return (tmp);
 }
 
-int				check_if_readable(struct stat *file_stat, char *args, \
+int				check_if_readable(struct stat *file_stat, \
 t_client *client)
 {
 	if (file_stat->st_mode & S_IRUSR)
@@ -89,5 +87,5 @@ t_client *client)
 		send_info(client, "ERROR: not a directory");
 		return (0);
 	}
-	return ((check_if_readable(file_stat, args, client)) ? 1 : 0);
+	return ((check_if_readable(file_stat, client)) ? 1 : 0);
 }
